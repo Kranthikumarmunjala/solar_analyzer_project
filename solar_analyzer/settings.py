@@ -201,16 +201,27 @@ WSGI_APPLICATION = 'solar_analyzer.wsgi.application'
 import dj_database_url
 import os
 
-# Database Configuration
-DATABASES = {
-    'default': dj_database_url.config(
-        # This tells Django: "If there is a DATABASE_URL, use it. If not, be empty."
-        default='mysql://root:your_local_password@localhost:3306/solar_analyzer_db',
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+import dj_database_url
+import os
 
+# Database Configuration
+# Parse the URL but ignore the problematic 'ssl-mode' query parameter
+db_config = dj_database_url.config(
+    default='mysql://root:admin123@localhost:3306/solar_analyzer_db',
+    conn_max_age=600,
+    ssl_require=True
+)
+
+# Fix for the 'ssl-mode' error:
+# If 'ssl-mode' exists in the parsed options, remove it and properly set the SSL context
+if 'OPTIONS' in db_config and 'ssl-mode' in db_config['OPTIONS']:
+    del db_config['OPTIONS']['ssl-mode']
+    # We ensure a basic SSL context is requested, which Aiven requires
+    db_config['OPTIONS']['ssl'] = {'check_hostname': False}
+
+DATABASES = {
+    'default': db_config
+}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
