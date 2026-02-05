@@ -133,7 +133,9 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'  # Change this to something 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []  # For local dev, empty is fine.
+# ALLOWED_HOSTS = []  # For local dev, empty is fine.
+
+ALLOWED_HOSTS = ['*']
 
 # Application definition (add our app 'analysis' and rest_framework)
 INSTALLED_APPS = [
