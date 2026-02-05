@@ -198,16 +198,29 @@ WSGI_APPLICATION = 'solar_analyzer.wsgi.application'
 # }
 
 
+import dj_database_url
+import os
+
+# Database Configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'solar_analyzer_db',
-        'USER': 'root',
-        'PASSWORD': '9346509523Kranthi',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    'default': dj_database_url.config(
+        # This tells Django: "If there is a DATABASE_URL, use it. If not, be empty."
+        default='mysql://root:your_local_password@localhost:3306/solar_analyzer_db',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'solar_analyzer_db',
+#         'USER': 'root',
+#         'PASSWORD': '9346509523Kranthi',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation
